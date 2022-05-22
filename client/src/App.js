@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route element={<LoginAndRegistration/>} path="/Gamepartyfinder" default/>
+          <Route element={<LoginAndRegistration/>} path="/FinancialTimes" default/>
         </Routes>
       </BrowserRouter>
     </div>
