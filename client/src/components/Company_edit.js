@@ -11,7 +11,7 @@ const Company_edit = () => {
             <h1 className="text-white pr-10 text-4xl">Financial Times</h1>
         </div>
         
-        {/* SEARC BAR */}
+        {/* SEARCH BAR */}
         <div className="flex align-middle justify-center pb-10 pt-6">
             <label htmlFor="email" className="text-lg text-white pr-5">SEARCH TICKER:</label>
                 <input className="pl-5" type="text" />
