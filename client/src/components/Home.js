@@ -1,7 +1,69 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 
-const Home = () => {
+const Home = (props) => {
 
+    const [error, setErrors] = useState({});
+    const [newsFeed, setNewsFeed] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            // const tickerData = await axios.get('http://localhost:8000/api/tickers/' + props.user._id)
+            //     .then( res => {
+            //         console.log(res);
+            //         console.log(res.data.tickers);
+            //     })
+            //     .catch( err => {
+            //         console.log(err.response.data);
+            //         setErrors(err.response.data.errors);
+            //     })
+
+            //For testing purposes:
+            const tickerData = {
+                data:{
+                    tickers: [
+                        {
+                            ticker: 'AMZN'
+                        },
+                        {
+                            ticker: 'TSLA'
+                        },
+                        {
+                            ticker: 'GOOGL'
+                        },
+                        {
+                            ticker: 'AAPL'
+                        }
+                    ]
+                }
+            };
+            var updatedNewsFeed = [];
+            for(var i=0; i<tickerData.data.tickers.length; i++){
+                var newsRequest = {
+                    method: 'GET',
+                    url: 'https://yh-finance.p.rapidapi.com/auto-complete',
+                    params: {q: tickerData.data.tickers[i].ticker, region: 'US'},
+                    headers: {
+                        'X-RapidAPI-Host': 'yh-finance.p.rapidapi.com',
+                        'X-RapidAPI-Key': 'dc60b6f2cemsh4a110ca38006ccep1a1480jsn23d6c06c662f'
+                    }
+                };
+                const newsData = await axios.request(newsRequest)
+                        .then(function (response) {
+                            console.log(response.data);
+                            for(var y=0; y<response.data.news.length; y++){
+                                updatedNewsFeed.push(<a href={response.data.news[y].link}><p className="text-xs text-white">{response.data.news[y].title}</p></a>);
+                                console.log(updatedNewsFeed);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                        });
+            };
+            setNewsFeed(updatedNewsFeed);
+        }
+    )()
+    })
 
     return (
 
@@ -54,15 +116,7 @@ const Home = () => {
                 <div className="col-span-1 p-10">
                     <h1 className="text-white text-xl">NEWS FEED</h1>
                     <div className="pt-4">
-                        <a href="#"><p className="text-xs text-white">NEWS ITEM TO BE MAPPED THROUGH API</p></a>
-                        <a href="#"><p className="text-xs text-white">NEWS ITEM TO BE MAPPED THROUGH API</p></a>
-                        <a href="#"><p className="text-xs text-white">NEWS ITEM TO BE MAPPED THROUGH API</p></a>
-                        <a href="#"><p className="text-xs text-white">NEWS ITEM TO BE MAPPED THROUGH API</p></a>
-                        <a href="#"><p className="text-xs text-white">NEWS ITEM TO BE MAPPED THROUGH API</p></a>
-                        <a href="#"><p className="text-xs text-white">NEWS ITEM TO BE MAPPED THROUGH API</p></a>
-                        <a href="#"><p className="text-xs text-white">NEWS ITEM TO BE MAPPED THROUGH API</p></a>
-                        <a href="#"><p className="text-xs text-white">NEWS ITEM TO BE MAPPED THROUGH API</p></a>
-                        <a href="#"><p className="text-xs text-white">NEWS ITEM TO BE MAPPED THROUGH API</p></a>
+                        {newsFeed}
                     </div>
                 </div>
             </div>
