@@ -1,24 +1,104 @@
 const Ticker = require("../models/ticker.model");
 const User = required("../models/user.model");
-const jwt = require("jsonwebtoken");
 
-const addNewTicker = async (req, res) => {
-  const { body } = req;
-  let newTicker = new Ticker(body);
-  console.log(newTicker);
-  console.log("new ticker added id", newTicker);
 
+// Get All Tickers
+exports.findAllTickers = async (req, res) => {
   try {
-    newTicker = await newTicker.save();
-    res.json(newTicker);
-    return;
-  } catch (error) {
-    console.log("error!", error);
-    res.status(400).json(error);
-    return;
+    const tickers = await Ticker.find();
+    res.status(200).json({
+      status: "success",
+      data: {
+        tickers
+      }
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({
+      status: "fail",
+      msg: err.message
+    });
   }
 };
 
-module.exports = {
-  addNewTicker,
+// Get Ticker
+exports.findOneTicker = async (req, res) => {
+  try {
+    const ticker = await Ticker.findById(req.params.id);
+    res.status(200).json({
+      status: "success",
+      data: {
+        ticker
+      }
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({
+      status: "fail",
+      msg: err.message
+    });
+  }
+};
+
+// Create Ticker
+exports.addNewTicker = async (req, res) => {
+  try {
+    const { body } = req;
+    const user = req.user;
+    let ticker = await Ticker.create({
+      userId: user._id,
+      text: req.body.text,
+    });
+    ticker = await ticker.populate("userId", "name username").save();
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        ticker
+      }
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({
+      status: "fail",
+      msg: err.message
+    });
+  }
+};
+
+
+// Update My Ticker
+exports.updateTicker = async (req, res) => {
+  try {
+    const ticker = await Ticker.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user.id },
+      req.body,
+      {
+        new: true
+      }
+    );
+    res.status(200).json({
+      status: "success",
+      data: {
+        ticker
+      }
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({ status: "error", msg: err.message });
+  }
+};
+
+// Delete My Ticker
+exports.deleteTicker = async (req, res) => {
+  try {
+    const tickerId = req.params.id;
+    await Ticker.findOneAndDelete({ _id: tickerId, userId: req.user.id });
+    res
+      .status(204)
+      .json({ status: "success", msg: "Ticker successfully deleted" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({ status: "error", msg: err.message });
+  }
 };
