@@ -25,15 +25,15 @@ const Home = (props) => {
                         {
                             ticker: 'AMZN'
                         },
-                        {
-                            ticker: 'TSLA'
-                        },
-                        {
-                            ticker: 'GOOGL'
-                        },
-                        {
-                            ticker: 'AAPL'
-                        }
+                        // {
+                        //     ticker: 'TSLA'
+                        // },
+                        // {
+                        //     ticker: 'GOOGL'
+                        // },
+                        // {
+                        //     ticker: 'AAPL'
+                        // }
                     ]
                 }
             };
@@ -41,7 +41,7 @@ const Home = (props) => {
             for(var i=0; i<tickerData.data.tickers.length; i++){
                 var newsRequest = {
                     method: 'GET',
-                    url: 'https://yh-finance.p.rapidapi.com/auto-complete',
+                    url: 'https://yh-finance.p.rapidapi.com/auto-complete?limit=3',
                     params: {q: tickerData.data.tickers[i].ticker, region: 'US'},
                     headers: {
                         'X-RapidAPI-Host': 'yh-finance.p.rapidapi.com',
