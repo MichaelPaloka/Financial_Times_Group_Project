@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Company_edit = () => {
-  return (
+const CompanyEdit = () => {
+return (
 
     <div className="bg-gray-500 h-screen">
         
@@ -51,4 +51,4 @@ const Company_edit = () => {
 )
 }
 
-export default Company_edit
+export default CompanyEdit

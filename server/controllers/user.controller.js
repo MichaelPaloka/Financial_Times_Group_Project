@@ -9,8 +9,8 @@ module.exports.register = async (request, response) => {
     const newUser = new User(request.body);
     try {
         const newUserObject = await newUser.save();
-        const userToken = jwt.sign({ id: newUser._id}, process.env.JWT_SECRET);
-        response.cookie("usertoken", userToken, process.env.JWT_SECRET, {
+        const userToken = jwt.sign({ id: newUser._id}, process.env.SECRET_KEY);
+        response.cookie("usertoken", userToken, process.env.SECRET_KEY, {
             httpOnly:true,
             expires: new Date(Date.now() + 90000000),
         })
@@ -52,10 +52,10 @@ module.exports.login = async (request, response) => {
         return;
     }
 
-    const userToken = jwt.sign({ id: userQuery._id}, process.env.JWT_SECRET);
+    const userToken = jwt.sign({ id: userQuery._id}, process.env.SECRET_KEY);
     console.log("token", userToken);
 
-    response.cookie("usertoken", userToken, process.env.JWT_SECRET, {
+    response.cookie("usertoken", userToken, process.env.SECRET_KEY, {
         httpOnly:true,
         expires: new Date(Date.now() + 90000000),
     })
@@ -90,7 +90,7 @@ module.exports.updateProfile = (request, response) => {
 module.exports.getLoggedInUser = (request, response) => {
     const decodedJWT = jwt.verify(
         request.cookies.usertoken, 
-        process.env.JWT_SECRET);
+        process.env.SECRET_KEY);
     User.findOne({_id:decodedJWT.id})
         .then(user => {
             response.json(user)})

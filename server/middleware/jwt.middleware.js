@@ -7,7 +7,7 @@ const authenticateJwt = async (req, res, next) => {
     try {
         decodedJwt = await jwt.verify(
             req.cookies.usertoken,
-            process.env.JWT_SECRET
+            process.env.SECRET_KEY
         );
         console.log("Success", decodedJwt);
         next();
