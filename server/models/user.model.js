@@ -40,12 +40,6 @@ const UserSchema = new mongoose.Schema({
         ],
         minlength: [5, "Your password must be longer than 4 characters!"]
     },
-    joinedGamedParties: {
-        type: [],
-        required: [
-            false,
-        ]
-    }
 }, { timestamps: true });
 
 

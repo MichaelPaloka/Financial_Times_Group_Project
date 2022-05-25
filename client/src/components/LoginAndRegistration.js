@@ -28,7 +28,7 @@ const LoginAndRegistration = () => {
             .then( res => {
                 console.log(res);
                 console.log(res.data);
-                // navigate("/financialtimes/home")
+                navigate("/home")
             })
             .catch( err => {
                 console.log(err.response.data);
@@ -46,7 +46,7 @@ const LoginAndRegistration = () => {
         })
             .then( res => {
                 console.log(res);
-                // navigate("/financialtimes/home")
+                navigate("/home")
             })
             .catch( err => {
                 console.log(err.response.data);
@@ -61,21 +61,21 @@ const LoginAndRegistration = () => {
                     <div className="mb-4">
                         {/* Email */}
                         <div>
-                            <label htmlFor="email" className="text-lg text-white">Email:</label>
+                            <label for="email" className="text-lg text-white">Email:</label>
                                 <div>
                                     <input type="email" onChange = {(e) => setEmail(e.target.value)} />
                                 </div>
                         </div>
                         {/* Password */}
                         <div className="mt-5">
-                            <label htmlFor="password" className="text-lg text-white">Password:</label>
+                            <label for="password" className="text-lg text-white">Password:</label>
                                 <div>
                                     <input type="password" onChange = {(e) => setPassword(e.target.value)} />
                                 </div>
                         </div>
                     </div>
                     <div className="ml-10 h-10 mt-4">
-                        <button className="align-middle border-4 border-black p-3 align-center bg-white">LOGIN</button>
+                        <button type='submit' className="align-middle border-4 border-black p-3 align-center bg-white">LOGIN</button>
                     </div>
                 </form>
             </div>
@@ -88,7 +88,7 @@ const LoginAndRegistration = () => {
                         <div>
                             {/* First Name */}
                             <div>
-                                <label htmlFor="firstName" className="text-lg text-white mt-5">First Name:</label>
+                                <label for="firstName" className="text-lg text-white mt-5">First Name:</label>
                                     <div>
                                         <input type="text" onChange = {(e) => setFirstName(e.target.value)} />
                                     </div>
@@ -98,7 +98,7 @@ const LoginAndRegistration = () => {
                             )}
                             {/* Last Name */}
                             <div>
-                                <label htmlFor="lastName" className="text-lg text-white mt-5">Last Name:</label>
+                                <label for="lastName" className="text-lg text-white mt-5">Last Name:</label>
                                     <div>
                                         <input type="text" onChange = {(e) => setLastName(e.target.value)} />
                                     </div>
@@ -110,7 +110,7 @@ const LoginAndRegistration = () => {
                         <div>
                             {/* Email */}
                             <div>
-                                <label htmlFor="email" className="text-lg text-white mt-5">Email:</label>
+                                <label for="email" className="text-lg text-white mt-5">Email:</label>
                                     <div>
                                         <input type="email" onChange = {(e) => setEmail(e.target.value)} />
                                     </div>
@@ -122,7 +122,7 @@ const LoginAndRegistration = () => {
                         <div>
                             {/* Password */}
                             <div>
-                                <label htmlFor="password" className="text-lg text-white mt-5">Password:</label>
+                                <label for="password" className="text-lg text-white mt-5">Password:</label>
                                     <div>
                                         <input type="password" onChange = {(e) => setPassword(e.target.value)} />
                                     </div>
@@ -132,7 +132,7 @@ const LoginAndRegistration = () => {
                             )}
                             {/* Confirm Password */}
                             <div>
-                                <label htmlFor="confirmPassword" className="text-lg text-white mt-5">Confirm Password:</label>
+                                <label for="confirmPassword" className="text-lg text-white mt-5">Confirm Password:</label>
                                     <div>
                                         <input type="password" onChange = {(e) => setConfirmPassword(e.target.value)} />
                                     </div>
@@ -142,8 +142,8 @@ const LoginAndRegistration = () => {
                             )}
                         </div>
                         <div className="ml-10 h-10 mt-10">
-                        <button className="align-middle border-4 border-black p-3 align-center bg-white">CREATE ACCOUNT</button>
-                    </div>
+                            <button type='submit' className="align-middle border-4 border-black p-3 align-center bg-white">CREATE ACCOUNT</button>
+                        </div>
                     </form>
                 </div>
             </div>

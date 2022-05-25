@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LoginAndRegistration from './components/LoginAndRegistration';
 import Home from './components/Home';
 import Company from './components/Company';
-import Company_edit from './components/Company_edit'
+import CompanyEdit from './components/CompanyEdit'
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
           <Route element={<LoginAndRegistration/>} path="/" default/>
           <Route element={<Home/>} path="/home" />
           <Route element={<Company/>} path="/company" />
-          <Route element={<Company_edit/>} path="/company_edit" />
+          <Route element={<CompanyEdit/>} path="/company_edit" />
         </Routes>
       </BrowserRouter>
     </div>
