@@ -61,14 +61,14 @@ const LoginAndRegistration = () => {
                     <div className="mb-4">
                         {/* Email */}
                         <div>
-                            <label for="email" className="text-lg text-white">Email:</label>
+                            <label htmlFor="email" className="text-lg text-white">Email:</label>
                                 <div>
                                     <input type="email" onChange = {(e) => setEmail(e.target.value)} />
                                 </div>
                         </div>
                         {/* Password */}
                         <div className="mt-5">
-                            <label for="password" className="text-lg text-white">Password:</label>
+                            <label htmlFor="password" className="text-lg text-white">Password:</label>
                                 <div>
                                     <input type="password" onChange = {(e) => setPassword(e.target.value)} />
                                 </div>
@@ -88,7 +88,7 @@ const LoginAndRegistration = () => {
                         <div>
                             {/* First Name */}
                             <div>
-                                <label for="firstName" className="text-lg text-white mt-5">First Name:</label>
+                                <label htmlFor="firstName" className="text-lg text-white mt-5">First Name:</label>
                                     <div>
                                         <input type="text" onChange = {(e) => setFirstName(e.target.value)} />
                                     </div>
@@ -98,7 +98,7 @@ const LoginAndRegistration = () => {
                             )}
                             {/* Last Name */}
                             <div>
-                                <label for="lastName" className="text-lg text-white mt-5">Last Name:</label>
+                                <label htmlFor="lastName" className="text-lg text-white mt-5">Last Name:</label>
                                     <div>
                                         <input type="text" onChange = {(e) => setLastName(e.target.value)} />
                                     </div>
@@ -110,7 +110,7 @@ const LoginAndRegistration = () => {
                         <div>
                             {/* Email */}
                             <div>
-                                <label for="email" className="text-lg text-white mt-5">Email:</label>
+                                <label htmlFor="email" className="text-lg text-white mt-5">Email:</label>
                                     <div>
                                         <input type="email" onChange = {(e) => setEmail(e.target.value)} />
                                     </div>
@@ -122,7 +122,7 @@ const LoginAndRegistration = () => {
                         <div>
                             {/* Password */}
                             <div>
-                                <label for="password" className="text-lg text-white mt-5">Password:</label>
+                                <label htmlFor="password" className="text-lg text-white mt-5">Password:</label>
                                     <div>
                                         <input type="password" onChange = {(e) => setPassword(e.target.value)} />
                                     </div>
@@ -132,7 +132,7 @@ const LoginAndRegistration = () => {
                             )}
                             {/* Confirm Password */}
                             <div>
-                                <label for="confirmPassword" className="text-lg text-white mt-5">Confirm Password:</label>
+                                <label htmlFor="confirmPassword" className="text-lg text-white mt-5">Confirm Password:</label>
                                     <div>
                                         <input type="password" onChange = {(e) => setConfirmPassword(e.target.value)} />
                                     </div>
