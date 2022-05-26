@@ -12,60 +12,65 @@ const Home = (props) => {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-            axios.get('http://localhost:8000/api/tickers/byuser/' + props.user._id)
-                .then((res)=>{
-                    console.log(res.data.tickers);
-                    setTickers(res.data.tickers);
-                    let newTickers = res.data.tickers;
-                    console.log(newTickers);
-                    let newTickerText= [];
-                    console.log(newTickers[0]._id);
-                    console.log(newTickers.length);
-                    for(var i=0; i<newTickers.length; i++){
-                        let ticker = newTickers[i];
-                        console.log(ticker);
-                        newTickerText.push(
-                            <div className="grid grid-cols-4 max-w-6xl mx-auto p-4">
-                                <Link to={"/company/" + ticker._id}>
-                                    <p className="text-med text-white underline p-2">{ticker.ticker}</p>
-                                </Link>
-                                <p className="pl-12">{ticker.numOfShares}</p>
-                                <Link to={"/company/edit/" + ticker._id}>
-                                    <button className="align-middle border-4 border-black p-1 align-center bg-white">EDIT</button>
-                                </Link>
-                                <button className="align-middle border-4 border-black p-1 align-center bg-white">DELETE</button>
-                            </div>
-                        );
-                    }
-                    setTickerText(newTickerText);
-                    console.log(tickerText);
-                })
+        (
+            async () => {
+                const data1 = await axios.get('http://localhost:8000/api/tickers/byuser/' + props.user._id)
+                        console.log(props.user._id);
+                        console.log(data1.data.tickers);
+                        setTickers(data1.data.tickers);
+                        let newTickers = data1.data.tickers;
+                        console.log(newTickers);
+                        let newTickerText= [];
+                        console.log(newTickers[0]._id);
+                        console.log(newTickers.length);
+                        for(var i=0; i<newTickers.length; i++){
+                            let ticker = newTickers[i];
+                            console.log(ticker);
+                            newTickerText.push(
+                                <div className="grid grid-cols-4 max-w-6xl mx-auto p-4">
+                                    <Link to={"/company/" + ticker._id}>
+                                        <p className="text-med text-white underline p-2">{ticker.ticker}</p>
+                                    </Link>
+                                    <p className="pl-12">{ticker.numOfShares}</p>
+                                    <Link to={"/company/edit/" + ticker._id}>
+                                        <button className="align-middle border-4 border-black p-1 align-center bg-white">EDIT</button>
+                                    </Link>
+                                    <button className="align-middle border-4 border-black p-1 align-center bg-white">DELETE</button>
+                                </div>
+                            );
+                        }
+                        setTickerText(newTickerText);
+                        console.log(tickerText);
 
-            // var updatedNewsFeed = [];
-            // for(var i=0; i<7; i++){
-            //     var newsRequest = {
-            //         method: 'GET',
-            //         url: 'https://yh-finance.p.rapidapi.com/auto-complete?maxResult=1,fields=news',
-            //         params: {q: tickers[i].ticker, region: 'US'},
-            //         headers: {
-            //             'X-RapidAPI-Host': 'yh-finance.p.rapidapi.com',
-            //             'X-RapidAPI-Key': 'dc60b6f2cemsh4a110ca38006ccep1a1480jsn23d6c06c662f'
-            //         }
-            //     };
-            //     await axios.request(newsRequest)
-            //         .then(function (response) {
-            //             console.log(response.data);
-            //             for(var y=0; y<response.data.news.length; y++){
-            //                 updatedNewsFeed.push(<a href={response.data.news[y].link}><p className="text-xs text-white">{response.data.news[y].title}</p></a>);
-            //                 console.log(updatedNewsFeed);
-            //             }
-            //         })
-            //         .catch(function (error) {
-            //             console.error(error);
-            //         });
-            // };
-            // setNewsFeed(updatedNewsFeed);
-    },[]);
+                var updatedNewsFeed = [];
+                console.log(newTickers[0].ticker);
+                for(var i=0; i<newTickers.length; i++){
+                    var newsRequest = {
+                        method: 'GET',
+                        url: 'https://yh-finance.p.rapidapi.com/auto-complete',
+                        params: {q: newTickers[i].ticker, region: 'US'},
+                        headers: {
+                            'X-RapidAPI-Host': 'yh-finance.p.rapidapi.com',
+                            'X-RapidAPI-Key': 'dc60b6f2cemsh4a110ca38006ccep1a1480jsn23d6c06c662f'
+                        }
+                    };
+                }
+                const data2 = await axios.request(newsRequest)
+                    .then(function (response) {
+                        console.log(response.data);
+                        for(var y=0; y<response.data.news.length; y++){
+                            updatedNewsFeed.push(<a href={response.data.news[y].link}><p className="text-xs text-white">{response.data.news[y].title}</p></a>);
+                            console.log(updatedNewsFeed);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+                setNewsFeed(updatedNewsFeed);
+                setLoaded(true);
+            }
+        )()
+    },[])
 
     const addTickerHandler = (e) => {
         e.preventDefault();
