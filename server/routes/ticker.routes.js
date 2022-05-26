@@ -1,15 +1,9 @@
-const TickerController = require("../controllers/ticker.controller");
-const jwtMiddleware = require('../middleware/jwt.middleware')
+const TickerController = require('../controllers/ticker.controller');
 
-module.exports = (app) => {
-
-  app.post("/api/tickers", jwtMiddleware.authenticateJwt, TickerController.addNewTicker);
-
-  app.get("/api/tickers", jwtMiddleware.authenticateJwt, TickerController.findAllTickers);
-
-  app.put("/api/tickers/:id", jwtMiddleware.authenticateJwt,TickerController.updateTicker);
-
-  app.delete("/api/tickers/:id", jwtMiddleware.authenticateJwt,TickerController.deleteTicker);
-
-  app.get("/api/tickers/:id", jwtMiddleware.authenticateJwt,TickerController.findOneTicker);
-};
+module.exports = app => {
+    app.get('/api/tickers', TickerController.findAllTickers);
+    app.get('/api/tickers/:id', TickerController.findOneTicker);
+    app.put('/api/tickers/:id', TickerController.updateExistingTicker);
+    app.post('/api/tickers', TickerController.createNewTicker);
+    app.delete('/api/tickers/:id', TickerController.deleteAnExistingTicker);
+}

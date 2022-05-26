@@ -9,11 +9,7 @@ const TickerSchema = new mongoose.Schema({
   numOfShares: {
     type: String,
     required: [true, "Number of shares is required."]
-  },
-  user_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
+  }
 }, { timestamps: true });
 
 const Ticker = mongoose.model("Ticker", TickerSchema);

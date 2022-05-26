@@ -1,102 +1,59 @@
-const jwt = require('jsonwebtoken')
 const User = require('../models/user.model');
-const bcrypt = require('bcrypt');
 
-// Based on instructor Josh's register controller
-
-module.exports.register = async (request, response) => {
-    
-    const newUser = new User(request.body);
-    try {
-        const newUserObject = await newUser.save();
-        const userToken = jwt.sign({ id: newUser._id}, process.env.SECRET_KEY);
-        response.cookie("usertoken", userToken, process.env.SECRET_KEY, {
-            httpOnly:true,
-            expires: new Date(Date.now() + 90000000),
+module.exports.findAllUsers = (req, res) => {
+    User.find()
+        .then((allDaUsers) => {
+            res.json({ users: allDaUsers })
         })
-        response.json(newUserObject);
-    } catch(error) {
-        console.log("Error saving to Mongoose!");
-        response.status(400).json(error);
-        return;
-    }
-}
+        .catch((err) => {
+            res.json({ message: 'Error finding all users', error: err})
+        });}
 
-// Based on instructor Josh's Login controller
-module.exports.login = async (request, response) => {
-    const {body} = request;
+module.exports.findOneUser = (req, res) => {
+    User.findOne({ _id: req.params.id })
+        .then(oneSingleUser => {
+            res.json({ user: oneSingleUser })
+        })
+        .catch((err) => {
+            res.json({ message: 'Error finding one user', error: err })
+        });}
 
-    if (!body.email) {
-        response.status(400).json({ error: "No email entered!" });
-        return;
-    }
+module.exports.createNewUser = (req, res) => {
+    User.create(req.body)
+        .then(newlyCreatedUser => {
+            res.json({ user: newlyCreatedUser })
+        })
+        .catch((err) => {
+            res.json({ message: 'Error creating new user', error: err })
+        });}
 
-    let userQuery;
-    try {
-        userQuery = await User.findOne({ email: body.email });
-        console.log(userQuery);
-    } catch (error) {
-        response.status(400).json({ error: "Email cannot be found!" });
-    }
+module.exports.updateExistingUser = (req, res) => {
+    User.findOneAndUpdate(
+        { _id: req.params._id },
+        req.body,
+        { new: true, runValidators: true}
+    )
+        .then(updatedUser => {
+            req.json({ user: updatedUser })
+        })
+        .catch((err) => {
+            res.json({ message: 'Error updating user', error: err })
+        });}
 
-    console.log("query: ", userQuery);
+module.exports.deleteAnExistingUser = (req, res) => {
+    User.deleteOne({ _id: req.params.id })
+        .then(result => {
+            res.json({ result: result})
+        })
+        .catch((err) => {
+            res.json({ message: 'Error deleting user', error: err })
+        });}
 
-    if (userQuery === null) {
-        response.status(400).json({ err: "Email cannot be found!!" });
-        return;
-    }
-
-    const passwordCheck = bcrypt.compareSync(body.password, userQuery.password);
-
-    if (!passwordCheck) {
-        response.status(400).json({ error: "Email or Password is incorrect!" });
-        return;
-    }
-
-    const userToken = jwt.sign({ id: userQuery._id}, process.env.SECRET_KEY);
-    console.log("token", userToken);
-
-    response.cookie("usertoken", userToken, process.env.SECRET_KEY, {
-        httpOnly:true,
-        expires: new Date(Date.now() + 90000000),
-    })
-    .json({
-        message: "Successful Login",
-        user: userQuery
-    })
-}
-
-// Based on instructor Josh's and learn platform's Logout controller, does not work though.
-
-module.exports.logout = (request, response) => {
-    response
-    .clearCookie('usertoken')
-    .status(200)
-    .json({message: "You have been logged out!"});
-}
-
-
-// Based on learn Platform get 
-module.exports.getUser = (request, response) => {
-    User.findOne({_id:request.params.id})
-        .then(user => response.json(user))
-        .catch(err => response.json(err))
-}
-
-
-// Based on learn Platform update
-module.exports.updateProfile = (request, response) => {
-    User.findOneAndUpdate({_id:request.params.id}, request.body, {new:true, runValidators: true})
-        .then(updatedUser => response.json(updatedUser))
-        .catch(err => {response.status(400).json(err)});
-}
-
-module.exports.getLoggedInUser = (request, response) => {
-    const decodedJWT = jwt.verify(
-        request.cookies.usertoken, 
-        process.env.SECRET_KEY);
-    User.findOne({_id:decodedJWT.id})
+module.exports.findOneByEmailPass = (req, res) => {
+    User.find({email: req.params.email, password: req.params.pass})
         .then(user => {
-            response.json(user)})
-        .catch(err => response.json(err))
-}
+            res.json({ user: user })
+        })
+        .catch((err) => {
+        res.json({ message: 'Error finding by email', error: err })
+        });}

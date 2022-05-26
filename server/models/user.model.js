@@ -1,65 +1,37 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt')
 
-// Based on learn Platform model for users, and who to bcrypt passwords, and validate emails. 
-
+var validateEmail = function(email) {
+    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return re.test(email)
+};
 
 const UserSchema = new mongoose.Schema({
-    firstName: { 
+    firstName: {
         type: String,
-        required: [
-            true,
-            "A first name is required!"
-        ],
-        minlength: [2, "First name must be longer than 2 characters!"]
+        required: [true, "First name is required"],
     },
-    lastName: { 
+    lastName: {
         type: String,
-        required: [
-            true,
-            "A last name is required!"
-        ],
-        minlength: [2, "Last name must be longer than 2 characters!"]
+        required: [true, "Last name is required"],
     },
-    email: { 
+    email: {
         type: String,
-        required: [
-            true,
-            "An email is required!"
-        ],
-        validate: {
-            validator: val => /^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(val),
-            message: "Please enter a valid email"
-        }
+        trim: true,
+        lowercase: true,
+        unique: [true, "Listed email is already in use"],
+        required: [true, "Email address is required"],
+        validate: [validateEmail, 'Email address is invalid'],
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Email address is invalid']
     },
-    password: { 
+    password: {
         type: String,
-        required: [
-            true,
-            "A password is required!"
-        ],
-        minlength: [5, "Your password must be longer than 4 characters!"]
-    },
-}, { timestamps: true });
-
-
-UserSchema.virtual('confirmPassword')
-    .get( () => this._confirmPassword )
-    .set( (value) => this._confirmPassword = value );
-
-UserSchema.pre('validate', function(next) {
-    if (this.password !== this.confirmPassword) {
-        this.invalidate('confirmPassword', 'Password must match confirm password');
+        required: [true, "Password is required"]
     }
-    next();
-    });
+    // tickers: {
+    //     type: [[User.UserSchema]]
+    // }
+});
 
-UserSchema.pre('save', function(next) {
-    bcrypt.hash(this.password, 10)
-        .then(hash => {
-            this.password = hash;
-            next();
-        });
-    });
+const User = mongoose.model('User', UserSchema);
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = User;

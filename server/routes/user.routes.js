@@ -1,12 +1,10 @@
 const UserController = require('../controllers/user.controller');
-const jwtMiddleware = require('../middleware/jwt.middleware')
 
-// Including the middleware in the route for authentication was explained by Josh in lecture
-
-module.exports = (app) => {
-    app.post('/api/user', UserController.register);
-    app.post('/api/user/login', UserController.login);
-    app.post('/api/user/logout', UserController.logout);
-    app.get('/api/user/:id', jwtMiddleware.authenticateJwt, UserController.getLoggedInUser);
-    app.put('/api/user/:id', jwtMiddleware.authenticateJwt, UserController.updateProfile);
+module.exports = app => {
+app.get('/api/users', UserController.findAllUsers);
+    app.get('/api/users/:id', UserController.findOneUser);
+    app.put('/api/users/:id', UserController.updateExistingUser);
+    app.get('/api/users/byemail/:email/:pass', UserController.findOneByEmailPass);
+    app.post('/api/users', UserController.createNewUser);
+    app.delete('/api/users/:id', UserController.deleteAnExistingUser);
 }

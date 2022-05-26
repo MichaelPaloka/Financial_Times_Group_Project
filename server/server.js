@@ -1,17 +1,16 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const cookieParser = require('cookie-parser')
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }))
-app.use(cookieParser())
-require('./config/mongoose.config');
-require('./routes/user.routes')(app);
-require('./routes/ticker.routes')(app);
 
-app.listen(process.env.MY_PORT, () => {
-    console.log("Listening at ", process.env.MY_PORT)
-})
+require('./config/mongoose.config');
+
+const UserRoutes = require("./routes/user.routes");
+UserRoutes(app);
+const TickerRoutes = require("./routes/ticker.routes");
+TickerRoutes(app);
+
+app.listen(8000, () => console.log("Listening on port: 8000"));
