@@ -25,7 +25,8 @@ module.exports.createNewUser = (req, res) => {
         })
         .catch((err) => {
             res.json({ message: 'Error creating new user', error: err })
-        });}
+        });
+}
 
 module.exports.updateExistingUser = (req, res) => {
     User.findOneAndUpdate(

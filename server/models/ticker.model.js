@@ -9,6 +9,9 @@ const TickerSchema = new mongoose.Schema({
   numOfShares: {
     type: String,
     required: [true, "Number of shares is required."]
+  },
+  createdBy: {
+    type: String
   }
 }, { timestamps: true });
 

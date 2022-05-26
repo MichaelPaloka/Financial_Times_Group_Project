@@ -9,6 +9,15 @@ module.exports.findAllTickers = (req, res) => {
             res.json({ message: 'Something went wrong', error: err})
         });}
 
+module.exports.findTickersByUser = (req, res) => {
+    Ticker.find({createdBy: req.params.userId})
+        .then((allDaTickers) => {
+            res.json({ tickers: allDaTickers })
+        })
+        .catch((err) => {
+            res.json({ message: 'Something went wrong', error: err})
+        });}
+
 module.exports.findOneTicker = (req, res) => {
     Ticker.findOne({ _id: req.params.id })
         .then(oneSingleTicker => {

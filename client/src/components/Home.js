@@ -3,40 +3,34 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 
 const Home = (props) => {
-    const [user, setUser] = useState({});
-    const { id } = useParams()
     const [errors, setErrors] = useState({});
     const [newsFeed, setNewsFeed] = useState([]);
     const [tickers, setTickers] = useState([]);
     const [tickerText, setTickerText] = useState([]);
     const [newTicker, setNewTicker] = useState([]);
     const [shares, setShares] = useState([]);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        (async () => {
-            await axios.get('http://localhost:8000/api/user/' + id, {withCredentials: true})
+            axios.get('http://localhost:8000/api/tickers/byuser/' + props.user._id)
                 .then((res)=>{
-                    console.log(res.data);
-                    setUser(res.data);
-                })
-                .catch((err)=>{
-                    console.log(err);
-                })
-            await axios.get('http://localhost:8000/api/tickers', {withCredentials: true})
-                .then(res=>{
-                    console.log(res.data);
-                    console.log(res.data.data.tickers);
-                    setTickers(res.data.data.tickers);
-                    console.log(tickers);
+                    console.log(res.data.tickers);
+                    setTickers(res.data.tickers);
+                    let newTickers = res.data.tickers;
+                    console.log(newTickers);
                     let newTickerText= [];
-                    for(var i=0; i<=res.data.data.tickers.length; i++){
+                    console.log(newTickers[0]._id);
+                    console.log(newTickers.length);
+                    for(var i=0; i<newTickers.length; i++){
+                        let ticker = newTickers[i];
+                        console.log(ticker);
                         newTickerText.push(
                             <div className="grid grid-cols-4 max-w-6xl mx-auto p-4">
-                                <Link to={"/company/" + res.data.data.tickers[i]._id}>
-                                    <p className="text-med text-white underline p-2">AAPL</p>
+                                <Link to={"/company/" + ticker._id}>
+                                    <p className="text-med text-white underline p-2">{ticker.ticker}</p>
                                 </Link>
-                                <p className="pl-12">{res.data.data.tickers[i].numOfShares}</p>
-                                <Link to={"/company/edit/" + res.data.data.tickers[i]._id}>
+                                <p className="pl-12">{ticker.numOfShares}</p>
+                                <Link to={"/company/edit/" + ticker._id}>
                                     <button className="align-middle border-4 border-black p-1 align-center bg-white">EDIT</button>
                                 </Link>
                                 <button className="align-middle border-4 border-black p-1 align-center bg-white">DELETE</button>
@@ -44,11 +38,8 @@ const Home = (props) => {
                         );
                     }
                     setTickerText(newTickerText);
+                    console.log(tickerText);
                 })
-                // .catch((err)=>{
-                //     console.log(err.response.data.errors);
-                //     setErrors(err.response.data.errors);
-                // })
 
             // var updatedNewsFeed = [];
             // for(var i=0; i<7; i++){
@@ -74,7 +65,6 @@ const Home = (props) => {
             //         });
             // };
             // setNewsFeed(updatedNewsFeed);
-        })()
     },[]);
 
     const addTickerHandler = (e) => {
@@ -82,23 +72,23 @@ const Home = (props) => {
         axios.post('http://localhost:8000/api/tickers', {
             ticker: newTicker,
             numOfShares: shares,
-            user_id: user._id,
+            createdBy: props.user._id
         })
             .then(res=>{
+                console.log(res);
                 console.log(res.data.error);
                 if(res.data.error){
                     setErrors(res.data.error.errors);
                     console.log(res.data.error.errors);
                 }
             })
-            // .catch(err=>{
-            //     console.log(err.response.data.errors);
-            //     setErrors(err.response.data.errors);
-            // })
+            .catch(err=>{
+                console.log(err.response.data.errors);
+                setErrors(err.response.data.errors);
+            })
     };
 
     return (
-
         <div className="bg-gray-500 h-screen">
             {/* HEADER */}
             <div className="flex justify-center space-x-2 align-middle pr-10">
@@ -114,19 +104,19 @@ const Home = (props) => {
                 {/* LEFT SIDE */}
                 <div className="col-span-2 p-10">
                     <h1 className="text-white text-xl">PORTFOLIO</h1>
-                    {tickerText}
+                        {tickerText}
                     <form onSubmit={addTickerHandler}>
                         <label htmlFor="ticker" className="text-lg text-white pr-5">Ticker:</label>
                         <input name="ticker" className="pl-12" type="text" onChange = {(e)=>setNewTicker(e.target.value)}/>
-                        {/* <p>{
+                        <p>{
                             errors.newTicker ? 
                             errors.newTicker.message : null
-                        }</p> */}
+                        }</p>
                         <label htmlFor="numOfShares" className="text-lg text-white pr-5">Shares:</label>
-                        {/* <p>{
+                        <p>{
                             errors.numOfShares ? 
                             errors.numOfShares.message : null
-                        }</p> */}
+                        }</p>
                         <input name="numOfShares" type="text" onChange = {(e)=>setShares(e.target.value)}/>
                         <button className="align-middle border-4 border-black p-1 align-center bg-white">ADD</button>
                     </form>
