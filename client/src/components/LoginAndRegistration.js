@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 
-const LoginAndRegistration = () => {
+const LoginAndRegistration = (props) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState(""); 
     const [email, setEmail] = useState("");
@@ -13,8 +13,9 @@ const LoginAndRegistration = () => {
 
     // Based on instructor Josh's Login model
     const onRegisterHandler =  (e) => {
+        console.log("firstName:" + firstName);
         e.preventDefault();
-        axios.post('http://localhost:8000/api/user', {
+        axios.post('http://localhost:8000/api/user/:id', {
             firstName,
             lastName,
             email,

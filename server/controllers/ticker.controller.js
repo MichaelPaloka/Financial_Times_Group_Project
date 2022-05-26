@@ -1,9 +1,10 @@
 const Ticker = require("../models/ticker.model");
-const User = required("../models/user.model");
+const User = require("../models/user.model");
 
 
 // Get All Tickers
 exports.findAllTickers = async (req, res) => {
+  console.log("We are in findAll function");
   try {
     const tickers = await Ticker.find();
     res.status(200).json({
@@ -42,6 +43,7 @@ exports.findOneTicker = async (req, res) => {
 
 // Create Ticker
 exports.addNewTicker = async (req, res) => {
+  console.log("We are in addNewTicker function");
   try {
     const { body } = req;
     const user = req.user;

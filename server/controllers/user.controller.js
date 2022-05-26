@@ -34,6 +34,7 @@ module.exports.login = async (request, response) => {
     let userQuery;
     try {
         userQuery = await User.findOne({ email: body.email });
+        console.log(userQuery);
     } catch (error) {
         response.status(400).json({ error: "Email cannot be found!" });
     }
@@ -59,7 +60,10 @@ module.exports.login = async (request, response) => {
         httpOnly:true,
         expires: new Date(Date.now() + 90000000),
     })
-    .json({message: "Successful Login"})
+    .json({
+        message: "Successful Login",
+        user: userQuery
+    })
 }
 
 // Based on instructor Josh's and learn platform's Logout controller, does not work though.

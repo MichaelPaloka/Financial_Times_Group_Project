@@ -10,6 +10,7 @@ app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }))
 app.use(cookieParser())
 require('./config/mongoose.config');
 require('./routes/user.routes')(app);
+require('./routes/ticker.routes')(app);
 
 app.listen(process.env.MY_PORT, () => {
     console.log("Listening at ", process.env.MY_PORT)

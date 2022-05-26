@@ -12,10 +12,10 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route element={<LoginAndRegistration changeUser={setUser}/>} path="/" default/>
+          <Route element={<LoginAndRegistration user={user} changeUser={setUser}/>} path="/" default/>
           <Route element={<Home user={user}/>} path="/home"/>
-          <Route element={<Company/>} path="/company" />
-          <Route element={<CompanyEdit/>} path="/company_edit" />
+          <Route element={<Company/>} path="/company/:id" />
+          <Route element={<CompanyEdit/>} path="/company/edit/:id" />
         </Routes>
       </BrowserRouter>
     </div>
