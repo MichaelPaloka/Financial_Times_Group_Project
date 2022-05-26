@@ -35,7 +35,7 @@ const CompanyEdit = () => {
             }))
             .catch((err) => {
                 console.log(err.response.data)
-                setErrors(err.response.data.ticker.errors)
+                setErrors(err.response.data.errors)
             })
     }
 
@@ -67,9 +67,10 @@ return (
                             Edit # of shares
                             <input className="pl-12" type="text" value={numOfShares} onChange = {(e) => setNumOfShares(e.target.value)}/>
                         </label>
-                        {errors.numOfShares && (
-                                    <p style={{color: 'red'}}>{errors.numOfShares.message}</p>
-                        )}
+                        <p>{
+                            errors.numOfShares ? 
+                            errors.numOfShares.message : null
+                        }</p>
                     </div>
                     
                     <button className="align-middle border-4 border-black p-1 align-center bg-white">EDIT</button>

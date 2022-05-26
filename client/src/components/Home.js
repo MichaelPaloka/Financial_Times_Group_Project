@@ -7,8 +7,8 @@ const Home = (props) => {
     const [newsFeed, setNewsFeed] = useState([]);
     const [tickers, setTickers] = useState([]);
     const [tickerText, setTickerText] = useState([]);
-    const [newTicker, setNewTicker] = useState([]);
-    const [shares, setShares] = useState([]);
+    const [newTicker, setNewTicker] = useState('');
+    const [shares, setShares] = useState('');
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -94,23 +94,29 @@ const Home = (props) => {
     return (
 
         
-        <div className="bg-gray-500 h-screen">
+        <div className="bg-cyan-800 h-screen">
             {/* HEADER */}
-            <div className="flex justify-center space-x-2 align-middle pr-10">
+            <div className="flex justify-center space-x-2 align-middle pr-10 mb-8">
                 <h1 className="text-white pr-10 text-4xl">Financial Times</h1>
             </div>
             
+
+            <div style={{}}>
+                <h2 className="text-white pr-10 text-4xl">Create A New Ticker</h2>
+            </div>
+
             <div className="grid grid-cols-3 max-w-6xl mx-auto">
                 {/* LEFT SIDE */}
+            <div style={{backgroundColor: 'gray'}}>
                 <div className="col-span-2 p-10">
-                    <h1 className="text-white text-xl">PORTFOLIO</h1>
-                        {tickerText}
+                    <h2 className="text-white text-xl">PORTFOLIO</h2>
+                    <p className="text-white pr-10 text-2xl">Create A Ticker</p>
                     <form onSubmit={addTickerHandler}>
                         <label htmlFor="ticker" className="text-lg text-white pr-5">Ticker:</label>
                         <input name="ticker" className="pl-12" type="text" onChange = {(e)=>setNewTicker(e.target.value)}/>
                         <p>{
-                            errors.newTicker ? 
-                            errors.newTicker.message : null
+                            errors.ticker ? 
+                            errors.ticker.message : null
                         }</p>
                         <label htmlFor="numOfShares" className="text-lg text-white pr-5">Shares:</label>
                         <p>{
@@ -120,30 +126,20 @@ const Home = (props) => {
                         <input name="numOfShares" type="text" onChange = {(e)=>setShares(e.target.value)}/>
                         <button className="align-middle border-4 border-black p-1 align-center bg-white">ADD</button>
                     </form>
+                    {tickerText}
                 </div>
+            </div>
 
 
                 {/* RIGHT SIDE */}
                 <div className="col-span-1 p-10">
-                    <h1 className="text-white text-xl">NEWS FEED</h1>
+                    <h2 className="text-white text-xl">NEWS FEED</h2>
                     <div className="pt-4">
                         {newsFeed}
                     </div>
                 </div>
             </div>
             
-            <div>
-                {
-                    tickers.map((ticker, index) => {
-                        return(
-                            <div key={index}>
-                                {ticker.ticker}
-                            </div>
-                        )
-                    })
-                }
-            </div>
-
         </div>
     )
 }
