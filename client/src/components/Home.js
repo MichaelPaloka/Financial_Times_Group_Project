@@ -21,7 +21,6 @@ const Home = (props) => {
                         let newTickers = data1.data.tickers;
                         console.log(newTickers);
                         let newTickerText= [];
-                        console.log(newTickers[0]._id);
                         console.log(newTickers.length);
                         for(var i=0; i<newTickers.length; i++){
                             let ticker = newTickers[i];
@@ -35,7 +34,6 @@ const Home = (props) => {
                                     <Link to={"/company/edit/" + ticker._id}>
                                         <button className="align-middle border-4 border-black p-1 align-center bg-white">EDIT</button>
                                     </Link>
-                                    <button className="align-middle border-4 border-black p-1 align-center bg-white">DELETE</button>
                                 </div>
                             );
                         }
@@ -94,17 +92,14 @@ const Home = (props) => {
     };
 
     return (
+
+        
         <div className="bg-gray-500 h-screen">
             {/* HEADER */}
             <div className="flex justify-center space-x-2 align-middle pr-10">
                 <h1 className="text-white pr-10 text-4xl">Financial Times</h1>
             </div>
             
-            {/* SEARCH BAR */}
-            <div className="flex align-middle justify-center pb-10 pt-6">
-                <label htmlFor="email" className="text-lg text-white pr-5">SEARCH TICKER:</label>
-                    <input className="pl-5" type="text" />
-            </div>
             <div className="grid grid-cols-3 max-w-6xl mx-auto">
                 {/* LEFT SIDE */}
                 <div className="col-span-2 p-10">
@@ -135,6 +130,18 @@ const Home = (props) => {
                         {newsFeed}
                     </div>
                 </div>
+            </div>
+            
+            <div>
+                {
+                    tickers.map((ticker, index) => {
+                        return(
+                            <div key={index}>
+                                {ticker.ticker}
+                            </div>
+                        )
+                    })
+                }
             </div>
 
         </div>

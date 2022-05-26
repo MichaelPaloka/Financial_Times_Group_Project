@@ -7,7 +7,7 @@ const TickerSchema = new mongoose.Schema({
     minlength: [2, "Ticker Must be a minimum of 2 characters."]
   },
   numOfShares: {
-    type: String,
+    type: Number,
     required: [true, "Number of shares is required."]
   },
   createdBy: {
